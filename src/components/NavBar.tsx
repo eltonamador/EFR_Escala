@@ -8,6 +8,7 @@ interface Props {
   onExport: () => void
   onImport: (file: File) => void
   onReset: () => void
+  isLocal?: boolean
 }
 
 const items: { id: Tela; label: string }[] = [
@@ -16,7 +17,7 @@ const items: { id: Tela; label: string }[] = [
   { id: 'coordenacao', label: 'Painel da Coordenação' },
 ]
 
-export function NavBar({ tela, onChange, onExport, onImport, onReset }: Props) {
+export function NavBar({ tela, onChange, onExport, onImport, onReset, isLocal = true }: Props) {
   const fileRef = useRef<HTMLInputElement>(null)
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -46,13 +47,17 @@ export function NavBar({ tela, onChange, onExport, onImport, onReset }: Props) {
         <div className="nav-tabs-desktop">{tabs}</div>
 
         <div className="nav-actions">
-          <button onClick={onExport} style={navBtn} title="Exportar estado para JSON">Exportar</button>
-          <button onClick={() => fileRef.current?.click()} style={navBtn} title="Importar estado de JSON">Importar</button>
-          <button
-            onClick={() => { if (confirm('Resetar para o estado inicial? Os dados atuais serão perdidos.')) onReset() }}
-            style={{ ...navBtn, color: 'rgba(255,180,180,0.9)' }}
-            title="Resetar para dados iniciais"
-          >Reset</button>
+          {isLocal && (
+            <>
+              <button onClick={onExport} style={navBtn} title="Exportar estado para JSON">Exportar</button>
+              <button onClick={() => fileRef.current?.click()} style={navBtn} title="Importar estado de JSON">Importar</button>
+              <button
+                onClick={() => { if (confirm('Resetar para o estado inicial? Os dados atuais serão perdidos.')) onReset() }}
+                style={{ ...navBtn, color: 'rgba(255,180,180,0.9)' }}
+                title="Resetar para dados iniciais"
+              >Reset</button>
+            </>
+          )}
           <input ref={fileRef} type="file" accept=".json" style={{ display: 'none' }} onChange={handleFile} />
         </div>
       </div>

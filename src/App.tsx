@@ -63,6 +63,8 @@ export default function App() {
 
   const dismissToast = useCallback(() => setToast(null), [])
 
+  const isLocal = dataSource === 'localStorage'
+
   return (
     <div style={{ minHeight: '100vh', background: 'var(--color-bg)' }}>
       <NavBar
@@ -70,6 +72,7 @@ export default function App() {
         onExport={handleExport}
         onImport={handleImport}
         onReset={handleReset}
+        isLocal={isLocal}
       />
       <main style={{ maxWidth: 1440, margin: '0 auto' }}>
         {tela === 'escala'       && <EscalaGeral state={state} setState={setState} />}
