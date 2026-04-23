@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "mcp__plugin_context-mode_context-mode__ctx_execute",
+      "Bash(node -e ' *)",
+      "mcp__plugin_context-mode_context-mode__ctx_batch_execute",
+      "Bash(npx tsc *)"
+    ]
+  }
+}

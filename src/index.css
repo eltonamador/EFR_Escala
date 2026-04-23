@@ -1,0 +1,57 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --color-bg: #f7f9fb;
+  --color-surface: #ffffff;
+  --color-surface-low: #f2f4f6;
+  --color-border: #e2e8f0;
+  --color-border-variant: #c6c6cd;
+  --color-primary: #0f172a;
+  --color-secondary: #334155;
+  --color-on-surface: #191c1e;
+  --color-muted: #64748b;
+
+  --color-ok-bg: #dcfce7;
+  --color-ok-text: #166534;
+  --color-alerta-bg: #fff7ed;
+  --color-alerta-text: #9a3412;
+  --color-conflito-bg: #fee2e2;
+  --color-conflito-text: #991b1b;
+  --color-incompleto-bg: #f1f5f9;
+  --color-incompleto-text: #475569;
+
+  --radius-sm: 2px;
+  --radius: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  --font-ui: 'Public Sans', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'Space Grotesk', sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-on-surface);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+button { cursor: pointer; font-family: inherit; }
+
+/* Tabelas com scroll horizontal em telas menores */
+.table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* Hover em linhas de tabela */
+tbody tr:hover { background: var(--color-surface-container-high, #e6e8ea) !important; }
+
+/* Focus visível em inputs e selects */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 2px rgba(15,23,42,0.12);
+}
+
+/* Scroll suave */
+html { scroll-behavior: smooth; }
