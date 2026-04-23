@@ -155,7 +155,7 @@ export function EscalaGeral({ state, setState }: Props) {
                 <td style={{ ...tdStyle, whiteSpace: 'nowrap' }}>
                   <button onClick={() => setModal({ tipo: 'detalhes', exercicioId: ex.id })} style={btnGhost}>Ver</button>
                   {admin && <button onClick={() => setModal({ tipo: 'editar', exercicioId: ex.id })} style={btnGhost}>Editar</button>}
-                  <button onClick={() => setModal({ tipo: 'solicitacao', exercicioId: ex.id })} style={btnGhost}>Solicitar</button>
+                  <button onClick={() => setModal({ tipo: 'solicitacao', exercicioId: ex.id })} style={btnGhost}>Solicitar Permuta</button>
                 </td>
               </tr>
               </Fragment>
@@ -232,7 +232,7 @@ export function EscalaGeral({ state, setState }: Props) {
                     <div style={{ display: 'flex', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
                       <button onClick={() => setModal({ tipo: 'detalhes', exercicioId: ex.id })} style={btnCard}>Ver</button>
                       {admin && <button onClick={() => setModal({ tipo: 'editar', exercicioId: ex.id })} style={btnCard}>Editar</button>}
-                      <button onClick={() => setModal({ tipo: 'solicitacao', exercicioId: ex.id })} style={btnCard}>Solicitar</button>
+                      <button onClick={() => setModal({ tipo: 'solicitacao', exercicioId: ex.id })} style={btnCard}>Solicitar Permuta</button>
                     </div>
                   </div>
                 </div>
