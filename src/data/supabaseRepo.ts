@@ -48,6 +48,16 @@ export const supabaseRepo: IRepository = {
     return structuredClone(MOCK_STATE)
   },
 
+  appendExercicio(ex: Exercicio, state: AppState): AppState {
+    const next: AppState = { ...state, exercicios: [...state.exercicios, ex] }
+    // TODO Supabase: substituir por INSERT granular quando integração estiver pronta
+    // supabase.from('exercicios').insert({ id: ex.id, data: ex.data, numero: ex.numero,
+    //   chefe_id: ex.chefe, auxiliar_id: ex.auxiliar, seguranca_id: ex.seguranca,
+    //   condicoes_id: ex.condicoes, monitor1_id: ex.monitor1, monitor2_id: ex.monitor2,
+    //   monitor3_id: ex.monitor3 }).then(({ error }) => { if (error) console.error(error) })
+    return next
+  },
+
   saveExercicio(ex: Exercicio, state: AppState): AppState {
     const next: AppState = {
       ...state,

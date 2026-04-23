@@ -53,7 +53,7 @@ export function SolicitacoesList({ state, setState }: Props) {
   function handleConfirm(next: AppState) { setState(next); setModal(null) }
 
   return (
-    <div style={{ padding: 24 }}>
+    <div className="page-pad" style={{ padding: 24 }}>
       <h1 style={{
         fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 24,
         marginBottom: 8, color: 'var(--color-primary)',
@@ -89,9 +89,7 @@ export function SolicitacoesList({ state, setState }: Props) {
         <p style={{ color: 'var(--color-muted)', padding: '24px 0' }}>Nenhuma solicitação encontrada.</p>
       ) : (
         <div style={{
-          background: 'var(--color-surface)', border: '1px solid var(--color-border)',
-          borderRadius: 'var(--radius-lg)', overflow: 'hidden',
-        }}>
+        }} className="sol-table-outer">
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ background: 'var(--color-surface-low)' }}>

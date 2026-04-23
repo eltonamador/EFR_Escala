@@ -6,6 +6,8 @@ import type { AppState, Exercicio, Solicitacao, StatusSolicitacao } from '../typ
 export interface IRepository {
   hydrate(): AppState
   saveExercicio(ex: Exercicio, state: AppState): AppState
+  // Ponto de extensão: localStorage persiste via persistState; Supabase faz INSERT granular aqui.
+  appendExercicio(ex: Exercicio, state: AppState): AppState
   appendSolicitacao(sol: Solicitacao, state: AppState): AppState
   updateSolicitacao(updated: Solicitacao, state: AppState): AppState
   updateSolicitacaoStatus(id: string, status: StatusSolicitacao, obs: string | null, state: AppState): AppState

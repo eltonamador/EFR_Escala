@@ -34,12 +34,14 @@ const EMPTY: Omit<Exercicio, 'id' | 'status'> = {
 export function NovoExercicioModal({ state, onSave, onClose }: Props) {
   const [draft, setDraft] = useState<Omit<Exercicio, 'id' | 'status'>>(EMPTY)
 
-  const tempEx: Exercicio = { ...draft, id: '__novo__', status: 'OK' }
-  const bloqueios = verificarBloqueios(tempEx, state.exercicios)
-  const alertas = verificarAlertas(tempEx, state.exercicios)
-  const statusCalc = calcularStatus(tempEx, state.exercicios)
-
   const dataValida = draft.data !== ''
+  const tempEx: Exercicio = { ...draft, id: '__novo__', status: 'OK' }
+
+  // Só valida/calcula status depois que a data está preenchida — evita "Invalid time value"
+  const bloqueios = dataValida ? verificarBloqueios(tempEx, state.exercicios) : []
+  const alertas   = dataValida ? verificarAlertas(tempEx, state.exercicios)   : []
+  const statusCalc = dataValida ? calcularStatus(tempEx, state.exercicios)    : 'INCOMPLETO'
+
   const podeSalvar = dataValida && bloqueios.length === 0
 
   // impede criar 3º exercício no mesmo dia

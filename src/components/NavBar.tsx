@@ -24,43 +24,41 @@ export function NavBar({ tela, onChange, onExport, onImport, onReset }: Props) {
     if (file) { onImport(file); e.target.value = '' }
   }
 
+  const tabs = items.map(item => (
+    <button
+      key={item.id}
+      className="nav-tab-btn"
+      data-active={String(tela === item.id)}
+      onClick={() => onChange(item.id)}
+    >{item.label}</button>
+  ))
+
   return (
-    <nav style={{
-      background: 'var(--color-primary)',
-      padding: '0 24px',
-      display: 'flex',
-      alignItems: 'stretch',
-      height: 52,
-    }}>
-      <span style={{
-        color: '#fff', fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 16,
-        display: 'flex', alignItems: 'center', marginRight: 32, letterSpacing: '-0.01em',
-        whiteSpace: 'nowrap',
-      }}>EFR Escala</span>
+    <nav className="nav-root">
+      {/* Row 1: brand + (desktop: tabs) + actions */}
+      <div className="nav-row1">
+        <span className="nav-brand" style={{
+          color: '#fff', fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 16,
+          display: 'flex', alignItems: 'center', letterSpacing: '-0.01em', whiteSpace: 'nowrap',
+        }}>EFR Escala</span>
 
-      <div style={{ display: 'flex', flex: 1 }}>
-        {items.map(item => (
-          <button key={item.id} onClick={() => onChange(item.id)} style={{
-            background: 'none', border: 'none',
-            borderBottom: tela === item.id ? '2px solid #bec6e0' : '2px solid transparent',
-            color: tela === item.id ? '#fff' : 'rgba(255,255,255,0.6)',
-            fontFamily: 'var(--font-ui)', fontWeight: 600, fontSize: 13,
-            padding: '0 16px', height: '100%', cursor: 'pointer',
-            transition: 'color 0.15s', whiteSpace: 'nowrap',
-          }}>{item.label}</button>
-        ))}
+        {/* Tabs visíveis só no desktop (dentro de row1) */}
+        <div className="nav-tabs-desktop">{tabs}</div>
+
+        <div className="nav-actions">
+          <button onClick={onExport} style={navBtn} title="Exportar estado para JSON">Exportar</button>
+          <button onClick={() => fileRef.current?.click()} style={navBtn} title="Importar estado de JSON">Importar</button>
+          <button
+            onClick={() => { if (confirm('Resetar para o estado inicial? Os dados atuais serão perdidos.')) onReset() }}
+            style={{ ...navBtn, color: 'rgba(255,180,180,0.9)' }}
+            title="Resetar para dados iniciais"
+          >Reset</button>
+          <input ref={fileRef} type="file" accept=".json" style={{ display: 'none' }} onChange={handleFile} />
+        </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <button onClick={onExport} style={navBtn} title="Exportar estado para JSON">Exportar</button>
-        <button onClick={() => fileRef.current?.click()} style={navBtn} title="Importar estado de JSON">Importar</button>
-        <button
-          onClick={() => { if (confirm('Resetar para o estado inicial? Os dados atuais serão perdidos.')) onReset() }}
-          style={{ ...navBtn, color: 'rgba(255,180,180,0.9)' }}
-          title="Resetar para dados iniciais"
-        >Reset</button>
-        <input ref={fileRef} type="file" accept=".json" style={{ display: 'none' }} onChange={handleFile} />
-      </div>
+      {/* Row 2: tabs com scroll — visível só no mobile */}
+      <div className="nav-row2">{tabs}</div>
     </nav>
   )
 }

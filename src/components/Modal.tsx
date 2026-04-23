@@ -37,7 +37,7 @@ export function Modal({ titulo, onClose, children, largura = 560 }: Props) {
             lineHeight: 1, padding: '0 4px',
           }}>×</button>
         </div>
-        <div style={{ padding: '20px' }}>{children}</div>
+        <div className="modal-body">{children}</div>
       </div>
     </div>
   )

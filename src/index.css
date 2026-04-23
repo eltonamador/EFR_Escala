@@ -40,18 +40,88 @@ body {
 
 button { cursor: pointer; font-family: inherit; }
 
-/* Tabelas com scroll horizontal em telas menores */
+/* Tabelas com scroll horizontal */
 .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
 /* Hover em linhas de tabela */
 tbody tr:hover { background: var(--color-surface-container-high, #e6e8ea) !important; }
 
-/* Focus visível em inputs e selects */
+/* Focus visível */
 input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--color-primary) !important;
   box-shadow: 0 0 0 2px rgba(15,23,42,0.12);
 }
 
-/* Scroll suave */
 html { scroll-behavior: smooth; }
+
+/* ── Navbar ────────────────────────────────────────── */
+.nav-root { background: var(--color-primary); display: flex; }
+.nav-row1 { display: flex; align-items: center; }
+.nav-row2 { display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.nav-row2::-webkit-scrollbar { display: none; }
+.nav-tab-btn {
+  background: none; border: none; border-bottom: 2px solid transparent;
+  font-family: var(--font-ui); font-weight: 600; font-size: 13px;
+  padding: 0 16px; cursor: pointer; transition: color 0.15s;
+  white-space: nowrap; flex-shrink: 0; color: rgba(255,255,255,0.6);
+}
+.nav-tab-btn[data-active="true"] { color: #fff; border-bottom-color: #bec6e0; }
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+
+@media (min-width: 641px) {
+  .nav-root { flex-direction: row; align-items: stretch; height: 52px; padding: 0 24px; }
+  .nav-row1 { flex: 1; gap: 0; }
+  .nav-brand { margin-right: 32px; }
+  .nav-tabs-desktop { display: flex; flex: 1; align-self: stretch; }
+  .nav-row2 { display: none; }
+  .nav-tab-btn { height: 100%; }
+}
+
+@media (max-width: 640px) {
+  .nav-root { flex-direction: column; }
+  .nav-row1 { justify-content: space-between; padding: 0 16px; height: 48px; flex-shrink: 0; }
+  .nav-tabs-desktop { display: none; }
+  .nav-row2 { border-top: 1px solid rgba(255,255,255,0.12); flex-shrink: 0; }
+  .nav-tab-btn { height: 44px; }
+  .nav-actions { gap: 6px; }
+}
+
+/* ── Escala Geral: tabela ↔ cards ──────────────────── */
+.escala-table-wrap { display: block; }
+.escala-cards { display: none; flex-direction: column; gap: 10px; }
+
+@media (max-width: 640px) {
+  .escala-table-wrap { display: none !important; }
+  .escala-cards { display: flex !important; }
+}
+
+/* ── Páginas: padding menor no mobile ─────────────── */
+@media (max-width: 640px) {
+  .page-pad { padding: 14px !important; }
+}
+
+/* ── Solicitações: tabela com scroll ──────────────── */
+.sol-table-outer {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+@media (max-width: 640px) {
+  .sol-table-outer { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .sol-table-outer table { min-width: 580px; }
+}
+
+/* ── Painel: tabela com scroll ────────────────────── */
+.painel-table-wrap {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg); overflow: hidden; max-width: 480px;
+}
+@media (max-width: 640px) {
+  .painel-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+}
+
+/* ── Modal: padding menor no mobile ──────────────── */
+.modal-body { padding: 20px; }
+@media (max-width: 640px) {
+  .modal-body { padding: 14px; }
+}

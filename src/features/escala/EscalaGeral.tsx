@@ -8,6 +8,7 @@ import { DetalhesExercicioModal } from './DetalhesExercicioModal'
 import { NovaSolicitacaoModal } from '../solicitacoes/NovaSolicitacaoModal'
 import { NovoExercicioModal } from './NovoExercicioModal'
 import { isAdmin } from '../../lib/admin'
+import { getRepo } from '../../data/repository'
 
 interface Props {
   state: AppState
@@ -66,12 +67,12 @@ export function EscalaGeral({ state, setState }: Props) {
   }
 
   function handleSaveNovo(ex: Exercicio) {
-    setState({ ...state, exercicios: [...state.exercicios, ex] })
+    setState(getRepo().appendExercicio(ex, state))
     setModal(null)
   }
 
   return (
-    <div style={{ padding: 24 }}>
+    <div className="page-pad" style={{ padding: 24 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
         <h1 style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 24, color: 'var(--color-primary)' }}>
           Escala Geral
@@ -95,7 +96,8 @@ export function EscalaGeral({ state, setState }: Props) {
         </div>
       )}
 
-      {sorted.length > 0 && <div className="table-wrapper" style={{
+      {/* Desktop: tabela */}
+      {sorted.length > 0 && <div className="table-wrapper escala-table-wrap" style={{
         background: 'var(--color-surface)', border: '1px solid var(--color-border)',
         borderRadius: 'var(--radius-lg)', overflow: 'hidden',
       }}>
@@ -163,6 +165,83 @@ export function EscalaGeral({ state, setState }: Props) {
         </table>
       </div>}
 
+      {/* Mobile: cards */}
+      {sorted.length > 0 && (
+        <div className="escala-cards">
+          {sorted.map((ex, i) => {
+            const semanaAtual = getISOWeek(ex.data)
+            const semanAnterior = i > 0 ? getISOWeek(sorted[i - 1].data) : null
+            const inicioNovaSemana = semanAnterior !== null && semanaAtual !== semanAnterior
+            const semanaLabel = `Semana ${i === 0 ? 1 : 2} — ${ex.data.slice(0, 7).split('-').reverse().join('/')}`
+            const funcoes = [
+              { label: 'Chefe',     value: getUsuarioNome(ex.chefe),    req: true },
+              { label: 'Auxiliar',  value: getUsuarioNome(ex.auxiliar), req: true },
+              { label: 'Segurança', value: getUsuarioNome(ex.seguranca),req: true },
+              { label: 'Condições', value: getUsuarioNome(ex.condicoes),req: true },
+              { label: 'Monitor 1', value: ex.monitor1 ? getUsuarioNome(ex.monitor1) : null, req: false },
+              { label: 'Monitor 2', value: ex.monitor2 ? getUsuarioNome(ex.monitor2) : null, req: false },
+              { label: 'Monitor 3', value: ex.monitor3 ? getUsuarioNome(ex.monitor3) : null, req: false },
+            ].filter(f => f.req || f.value)
+            return (
+              <Fragment key={`card-${ex.id}`}>
+                {(i === 0 || inicioNovaSemana) && (
+                  <div style={{
+                    padding: '6px 12px', background: 'var(--color-primary)', color: '#fff',
+                    borderRadius: 'var(--radius)', fontFamily: 'var(--font-mono)',
+                    fontSize: 11, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase',
+                  }}>{semanaLabel}</div>
+                )}
+                <div style={{
+                  background: 'var(--color-surface)', borderRadius: 'var(--radius-lg)',
+                  border: '1px solid var(--color-border)', overflow: 'hidden',
+                  borderLeft: ex.status === 'CONFLITO' ? '4px solid var(--color-conflito-text)' : '1px solid var(--color-border)',
+                }}>
+                  <div style={{
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                    padding: '10px 14px', background: 'var(--color-surface-low)',
+                    borderBottom: '1px solid var(--color-border)',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontWeight: 700, fontSize: 14, fontFamily: 'var(--font-ui)', color: 'var(--color-primary)' }}>
+                        {formatData(ex.data)}
+                      </span>
+                      <span style={{ color: 'var(--color-muted)', fontSize: 13 }}>{getDiaSemana(ex.data)}</span>
+                      <span style={{
+                        fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 12,
+                        background: 'var(--color-primary)', color: '#fff',
+                        padding: '1px 7px', borderRadius: 'var(--radius-sm)',
+                      }}>{ex.numero}º</span>
+                    </div>
+                    <StatusBadge status={ex.status} />
+                  </div>
+                  <div style={{ padding: '8px 14px' }}>
+                    {funcoes.map(({ label, value }) => (
+                      <div key={label} style={{
+                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                        padding: '5px 0', borderBottom: '1px solid var(--color-border)', fontSize: 13,
+                      }}>
+                        <span style={{
+                          color: 'var(--color-muted)', fontFamily: 'var(--font-mono)',
+                          fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em',
+                        }}>{label}</span>
+                        <span style={{ color: 'var(--color-on-surface)', fontWeight: 500 }}>
+                          {value ?? '—'}
+                        </span>
+                      </div>
+                    ))}
+                    <div style={{ display: 'flex', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
+                      <button onClick={() => setModal({ tipo: 'detalhes', exercicioId: ex.id })} style={btnCard}>Ver</button>
+                      {admin && <button onClick={() => setModal({ tipo: 'editar', exercicioId: ex.id })} style={btnCard}>Editar</button>}
+                      <button onClick={() => setModal({ tipo: 'solicitacao', exercicioId: ex.id })} style={btnCard}>Solicitar</button>
+                    </div>
+                  </div>
+                </div>
+              </Fragment>
+            )
+          })}
+        </div>
+      )}
+
       {modal && modalEx && modal.tipo === 'editar' && (
         <EditarExercicioModal
           exercicio={modalEx} state={state}
@@ -202,4 +281,11 @@ const btnGhost: React.CSSProperties = {
   fontFamily: 'var(--font-ui)', fontSize: 12, fontWeight: 600,
   padding: '2px 8px', borderRadius: 'var(--radius)', cursor: 'pointer',
   textDecoration: 'underline',
+}
+
+const btnCard: React.CSSProperties = {
+  background: 'var(--color-surface-low)', border: '1px solid var(--color-border)',
+  borderRadius: 'var(--radius)', padding: '6px 14px', fontSize: 12,
+  fontFamily: 'var(--font-ui)', fontWeight: 600, cursor: 'pointer',
+  color: 'var(--color-secondary)',
 }

@@ -32,7 +32,7 @@ export function PainelCoordenacao({ state }: Props) {
   const m = calcularMetricas(state, getUsuarioNome)
 
   return (
-    <div style={{ padding: 24 }}>
+    <div className="page-pad" style={{ padding: 24 }}>
       <h1 style={{
         fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 24,
         marginBottom: 20, color: 'var(--color-primary)',
@@ -59,11 +59,7 @@ export function PainelCoordenacao({ state }: Props) {
           }}>Distribuição de Carga</h2>
           <div style={{
             background: 'var(--color-surface)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 'var(--radius-lg)',
-            overflow: 'hidden',
-            maxWidth: 480,
-          }}>
+          }} className="painel-table-wrap">
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr style={{ background: 'var(--color-surface-low)' }}>

@@ -26,6 +26,12 @@ export const localStorageRepo: IRepository = {
     return next
   },
 
+  appendExercicio(ex: Exercicio, state: AppState): AppState {
+    const next: AppState = { ...state, exercicios: [...state.exercicios, ex] }
+    this.persistState(next)
+    return next
+  },
+
   appendSolicitacao(sol: Solicitacao, state: AppState): AppState {
     const next: AppState = { ...state, solicitacoes: [...state.solicitacoes, sol] }
     this.persistState(next)
